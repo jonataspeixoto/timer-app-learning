@@ -14,19 +14,19 @@ export default function App() {
             id: 1,
             selected: true,
             sound: 'Alarm 1',
-            file: 'alarm1.mp3'
+            file: require('./assets/alarme1.mp3')
         },
         {
             id: 2,
             selected: false,
             sound: 'Alarm 2',
-            file: 'alarm2.mp3'
+            file: require('./assets/alarme2.mp3')
         },
         {
             id: 3,
             selected: false,
             sound: 'Alarm 3',
-            file: 'alarm3.mp3'
+            file: require('./assets/alarme3.mp3')
         }
     ])
 
@@ -117,7 +117,7 @@ export default function App() {
         )
     } else if (state == 'start') {
         return(
-            <Timer setSeconds={setSeconds} setMinutes={setMinutes} setState={setState} minutes={minutes} seconds={seconds}>
+            <Timer alarmSound={alarmSound} setSeconds={setSeconds} setMinutes={setMinutes} setState={setState} minutes={minutes} seconds={seconds}>
             </Timer>
         )
     }

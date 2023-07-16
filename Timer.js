@@ -2,9 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Audio } from 'expo-av';
 
 export default function Timer(props) {
     var done = false;
+
+    async function playSound() {
+        const soundObject = new Audio.Sound();
+        console.log('Loading Sound');
+        let alarm = (props.alarmSound.find((val) => { return val.selected }))
+        console.log(alarm)
+        await soundObject.loadAsync( alarm.file );
+    
+        console.log('Playing Sound');
+        await soundObject.playAsync();
+      }
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -20,6 +32,7 @@ export default function Timer(props) {
                         props.setState('select');
                         props.setMinutes(0);
                         props.setSeconds(1);
+                        playSound();
                     }
                 }
             }
