@@ -7,8 +7,8 @@ import Timer from './Timer';
 
 export default function App() {
     const [state, setState] = useState('select')
-    const [seconds, setSeconds] = useState(0);
-    const [minutes, setMinutes] = useState(1);
+    const [seconds, setSeconds] = useState(1);
+    const [minutes, setMinutes] = useState(0);
     const [alarmSound, setAlarmSound] = useState([
         {
             id: 1,
@@ -71,6 +71,7 @@ export default function App() {
                         onValueChange={(itemValue, itemIndex) => { setMinutes(itemValue) }}
                         style={{ height: 50, width: 100, color: 'white' }}
                     >
+                        <Picker.Item key={0} label={'0'} value={'0'} />
                         {
                             (tnumbers.map((val) => {
                                 return (<Picker.Item key={val} label={val.toString()} value={val.toString()} />);
@@ -83,7 +84,6 @@ export default function App() {
                         onValueChange={(itemValue, itemIndex) => { setSeconds(itemValue) }}
                         style={{ height: 50, width: 100, color: 'white' }}
                     >
-                        <Picker.Item key={0} label={'0'} value={'0'} />
                         {
                             (tnumbers.map((val) => {
                                 return (<Picker.Item key={val} label={val.toString()} value={val.toString()} />);
@@ -117,8 +117,7 @@ export default function App() {
         )
     } else if (state == 'start') {
         return(
-            <Timer setState={setState} minutes={minutes} seconds={seconds}>
-
+            <Timer setSeconds={setSeconds} setMinutes={setMinutes} setState={setState} minutes={minutes} seconds={seconds}>
             </Timer>
         )
     }

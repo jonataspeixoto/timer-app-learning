@@ -1,8 +1,52 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
+
 export default function Timer(props) {
+    var done = false;
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            props.setSeconds(props.seconds - 1)
+
+            if(props.seconds <= 0){
+                if (props.minutes > 0) {
+                    props.setMinutes ( minutes - 1 );
+                    props.setSeconds(59);
+                } else {
+                    if (!done){
+                        done = true;
+                        props.setState('select');
+                        props.setMinutes(0);
+                        props.setSeconds(1);
+                    }
+                }
+            }
+        }, 1000)
+
+        return () => clearInterval(timer);
+    })
+
+    function reset(){
+        props.setState('select');
+        props.setMinutes(0);
+        props.setSeconds(1);
+    }
+
+    function numberFormatter(number){
+        var finalNumber = '';
+        if (number < 10) {
+            finalNumber = '0' + number;
+        } else {
+            finalNumber = number;
+        }
+        return finalNumber;
+    }
+
+    var seconds = numberFormatter(props.seconds);
+    var minutes = numberFormatter(props.minutes);
+
     return (
         <View style={styles.container}>
             <StatusBar style='auto' />
@@ -17,10 +61,10 @@ export default function Timer(props) {
                 }}
             />
             <View style={{flexDirection: 'row'}}>
-                <Text style={styles.txtTimer}>{props.minutes} : </Text>
-                <Text style={styles.txtTimer}>{props.seconds}</Text>
+                <Text style={styles.txtTimer}>{minutes} : </Text>
+                <Text style={styles.txtTimer}>{seconds}</Text>
             </View>
-            <TouchableOpacity onPress={() => props.setState('select')} style={styles.btnStart}>
+            <TouchableOpacity onPress={() => reset('select')} style={styles.btnStart}>
                 <Text style={styles.txtStart}>Reset</Text>
             </TouchableOpacity>
         </View>
