@@ -3,11 +3,12 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { LinearGradient } from 'expo-linear-gradient';
+import Timer from './Timer';
 
 export default function App() {
     const [state, setState] = useState('select')
     const [seconds, setSeconds] = useState(0);
-    const [minutes, setMinutes] = useState(0);
+    const [minutes, setMinutes] = useState(1);
     const [alarmSound, setAlarmSound] = useState([
         {
             id: 1,
@@ -82,6 +83,7 @@ export default function App() {
                         onValueChange={(itemValue, itemIndex) => { setSeconds(itemValue) }}
                         style={{ height: 50, width: 100, color: 'white' }}
                     >
+                        <Picker.Item key={0} label={'0'} value={'0'} />
                         {
                             (tnumbers.map((val) => {
                                 return (<Picker.Item key={val} label={val.toString()} value={val.toString()} />);
@@ -94,13 +96,13 @@ export default function App() {
                         alarmSound.map((val) => {
                             if (val.selected) {
                                 return (
-                                    <TouchableOpacity onPress={() => setAlarm(val.id)} style={styles.btnChooseSelected}>
+                                    <TouchableOpacity key={val.id} onPress={() => setAlarm(val.id)} style={styles.btnChooseSelected}>
                                         <Text style={{ color: 'white' }}>{val.sound}</Text>
                                     </TouchableOpacity>
                                 )
                             } else {
                                 return (
-                                    <TouchableOpacity onPress={() => setAlarm(val.id)} style={styles.btnChoose}>
+                                    <TouchableOpacity key={val.id} onPress={() => setAlarm(val.id)} style={styles.btnChoose}>
                                         <Text style={{ color: 'white' }}>{val.sound}</Text>
                                     </TouchableOpacity>
                                 )
@@ -115,9 +117,9 @@ export default function App() {
         )
     } else if (state == 'start') {
         return(
-            <View>
-                <Text>Started</Text>
-            </View>
+            <Timer setState={setState} minutes={minutes} seconds={seconds}>
+
+            </Timer>
         )
     }
 }
